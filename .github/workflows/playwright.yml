@@ -19,6 +19,6 @@ jobs:
         dotnet build
         dotnet publish -c Release -o ./publish
     - name: Ensure browsers are installed
-      run: pwsh ./publish/bin/Debug/net8.0/playwright.ps1 install --with-deps
+      run: pwsh ./PlaywrightDemo/bin/Debug/net8.0/playwright.ps1 install --with-deps  # corrected path 
     - name: Run your tests
       run: dotnet test
