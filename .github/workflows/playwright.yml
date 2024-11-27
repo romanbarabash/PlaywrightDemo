@@ -21,9 +21,9 @@ jobs:
       run: pwsh ./PlaywrightDemo/bin/Debug/net8.0/playwright.ps1 install --with-deps
     - name: Run your tests
       run: dotnet test --logger "trx;LogFileName=test_results.trx"
-      continue-on-error: true  # Ensure the workflow continues even if the tests fail
+      continue-on-error: true  # Continue even if tests fail
     - name: Upload Test Results Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: test-results
-        path: test_results.trx
+        name: playwright-traces
+        path: PlaywrightFirstDemo/PlaywrightDemo/bin/Debug/net8.0/playwright-traces/*.zip  # Point to the .zip files
