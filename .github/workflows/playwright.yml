@@ -15,8 +15,10 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Build & Install
-      run: dotnet build
+      run: |
+        dotnet build
+        dotnet publish -c Release -o ./publish
     - name: Ensure browsers are installed
-      run: pwsh ./playwright.ps1 install --with-deps
+      run: pwsh ./publish/bin/Debug/net8.0/playwright.ps1 install --with-deps
     - name: Run your tests
       run: dotnet test
