@@ -1,57 +1,25 @@
 ﻿using Microsoft.Playwright;
+using Microsoft.Playwright.NUnit;
 
 namespace PlaywrightDemo.POM.Fixtures;
 
-public class AuthTestFixture
+public class AuthTestFixture : PageTest
 {
-    public static IPlaywright Playwright { get; private set; }
-    public static IBrowser Browser { get; private set; }
-    public IBrowserContext Context { get; private set; }
-    public IPage Page { get; private set; }
+    private static readonly string StateFilePath = Path.Combine(Directory.GetCurrentDirectory(), "state.json");
 
-    [OneTimeSetUp]
-    public async Task OneTimeSetup()
+    public override BrowserNewContextOptions ContextOptions()
     {
-        Playwright = await Microsoft.Playwright.Playwright.CreateAsync();
-        Browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+        return new BrowserNewContextOptions
         {
-            Headless = false,
-            Args = new[] { "--start-maximized" }
-        });
+            StorageStatePath = StateFilePath,
+            ViewportSize = new ViewportSize { Width = 1920, Height = 1080 }
+        };
     }
 
     [SetUp]
-    public async Task Setup()
+    public async Task StartTracingAsync()
     {
-        // Create new context from saved state
-        Context = await Browser.NewContextAsync(new BrowserNewContextOptions
-        {
-            StorageStatePath = Path.Combine(Directory.GetCurrentDirectory(), "state.json"),
-            ViewportSize = new ViewportSize { Width = 1920, Height = 1080 }
-        });
-
-        Page = await Context.NewPageAsync();
-        await StartTraceTests(Context);
-    }
-
-    [TearDown]
-    public async Task TearDown()
-    {
-        await StopTraceTests(Context);
-        await Page.CloseAsync();
-        await Context.CloseAsync();
-    }
-
-    [OneTimeTearDown]
-    public async Task OneTimeTearDown()
-    {
-        await Browser.CloseAsync();
-        Playwright.Dispose();
-    }
-
-    public async Task StartTraceTests(IBrowserContext context)
-    {
-        await context.Tracing.StartAsync(new TracingStartOptions
+        await Context.Tracing.StartAsync(new TracingStartOptions
         {
             Title = $"{TestContext.CurrentContext.Test.ClassName}.{TestContext.CurrentContext.Test.Name}",
             Screenshots = true,
@@ -60,9 +28,10 @@ public class AuthTestFixture
         });
     }
 
-    public async Task StopTraceTests(IBrowserContext context)
+    [TearDown]
+    public async Task StopTracingAsync()
     {
-        await context.Tracing.StopAsync(new TracingStopOptions
+        await Context.Tracing.StopAsync(new TracingStopOptions
         {
             Path = Path.Combine(
                 TestContext.CurrentContext.WorkDirectory,

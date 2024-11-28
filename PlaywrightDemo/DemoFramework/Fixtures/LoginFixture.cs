@@ -6,30 +6,40 @@ namespace PlaywrightDemo.POM.Fixtures;
 [SetUpFixture]
 public class LoginFixture
 {
-    public IPlaywright PW { get; set; }
-    public IBrowser Browser { get; set; }
-
-    [OneTimeSetUp]
-    public async Task Login()
+    public async Task Login(IPage page, string username, string password)
     {
-        PW = await Playwright.CreateAsync();
-        Browser = await PW.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false });
-
-        var context = await Browser.NewContextAsync();
-        var page = await context.NewPageAsync();
         var loginPage = new LoginPage(page);
-
         await loginPage.GoTo();
-        await loginPage.Login("test", "test");
+        await loginPage.Login(username, password);
+    }
 
+    public static async Task SaveStateAsync(string username, string password, string stateFilePath)
+    {
+        var playwright = await Playwright.CreateAsync();
+        var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false });
 
-        // save state to be able to use it in other tests
-        await context.StorageStateAsync(new()
+        var context = await browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+
+        await new LoginFixture().Login(page, username, password);
+
+        // Save state
+        await context.StorageStateAsync(new BrowserContextStorageStateOptions
         {
-            Path = Path.Combine(Directory.GetCurrentDirectory(), "state.json")
+            Path = stateFilePath
         });
 
-        await page.CloseAsync();
-        await Browser.CloseAsync();
+        await browser.CloseAsync();
+    }
+
+
+    [OneTimeSetUp]
+    public async Task GlobalSetup()
+    {
+        var statePath = Path.Combine(Directory.GetCurrentDirectory(), "state.json");
+        if (!File.Exists(statePath))
+        {
+            await SaveStateAsync("test", "test", statePath);
+        }
     }
 }
