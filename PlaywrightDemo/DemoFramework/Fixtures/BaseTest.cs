@@ -24,11 +24,7 @@ public class BaseTest : PageTest
         return new BrowserNewContextOptions()
         {
             ColorScheme = ColorScheme.Light,
-            ViewportSize = new()
-            {
-                Width = 1920,
-                Height = 1080
-            },
+            ViewportSize = new() { Width = 1920, Height = 1080 },
             BaseURL = "https://commitquality.com",
         };
     }
