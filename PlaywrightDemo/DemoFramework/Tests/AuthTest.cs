@@ -1,7 +1,7 @@
 ﻿using Microsoft.Playwright;
 using PlaywrightDemo.POM.Fixtures;
 
-namespace PlaywrightDemo.POM.Tests;
+namespace PlaywrightDemo.DemoFramework.Tests;
 
 [TestFixture]
 public class AuthTest : AuthTestFixture

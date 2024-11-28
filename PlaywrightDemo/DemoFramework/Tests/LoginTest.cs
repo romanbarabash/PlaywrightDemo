@@ -1,7 +1,7 @@
 ﻿using PlaywrightDemo.POM.Fixtures;
 using PlaywrightDemo.POM.Pages;
 
-namespace PlaywrightDemo.POM.Tests;
+namespace PlaywrightDemo.DemoFramework.Tests;
 
 [TestFixture]
 public class LoginTest : BaseTest
