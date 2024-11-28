@@ -1,34 +1,78 @@
 name: Playwright Tests
+
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
+
 jobs:
   test:
-    timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup dotnet
+    # Checkout repository
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # Setup .NET
+    - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    - name: Build & Install
+
+    # Build the solution
+    - name: Build Solution
+      run: dotnet build
+
+    # Debug the directory structure
+    - name: Debug Directory Structure
       run: |
-        dotnet build
-    - name: Archive Build Output
+        echo "Root directory structure:"
+        ls -R
+
+    # Ensure Playwright browsers are installed
+    - name: Ensure Browsers Are Installed
+      run: |
+        playwright_script="PlaywrightDemo/bin/Debug/net8.0/playwright.ps1"
+        if [ -f "$playwright_script" ]; then
+          pwsh "$playwright_script" install --with-deps
+        else
+          echo "Playwright script not found at $playwright_script."
+          exit 1
+        fi
+
+    # Run tests
+    - name: Run Tests
+      run: dotnet test --logger "trx;LogFileName=test_results.trx"
+
+    # Debug test results location
+    - name: Debug Test Results
+      run: |
+        echo "Looking for test results:"
+        find . -type f -name "*.trx"
+
+    # Upload test results
+    - name: Upload Test Results
+      if: always()
       uses: actions/upload-artifact@v3
       with:
-        name: build-output
-        path: PlaywrightFirstDemo/PlaywrightDemo/bin/Debug/net8.0/
-    - name: Ensure browsers are installed
-      run: pwsh ./PlaywrightDemo/bin/Debug/net8.0/playwright.ps1 install --with-deps
-    - name: Run your tests
-      run: dotnet test --logger "trx;LogFileName=test_results.trx"
-      continue-on-error: true  # Continue even if tests fail
-    - name: Upload Test Results Artifact
-      uses: actions/upload-artifact@v3
+        name: test-results
+        path: |
+          $(find . -type f -name "*.trx")
+
+    # Locate and upload Playwright traces
+    - name: Find and Upload Playwright Traces
+      if: always()
+      run: |
+        echo "Looking for Playwright traces:"
+        found_files=$(find . -type f -name "*.zip" -path "*/bin/Debug/net8.0/*")
+        if [ -z "$found_files" ]; then
+          echo "No Playwright trace files found to upload."
+          exit 0
+        fi
+        echo "$found_files" > artifact-files.txt
+    - uses: actions/upload-artifact@v3
       with:
         name: playwright-traces
-        path: PlaywrightFirstDemo/PlaywrightDemo/bin/Debug/net8.0/playwright-traces/*.zip  # Point to the .zip files
+        path: |
+          $(cat artifact-files.txt)
