@@ -6,22 +6,23 @@ namespace PlaywrightDemo.POM.Fixtures;
 [SetUpFixture]
 public class LoginFixture
 {
-    public async Task Login(IPage page, string username, string password)
-    {
-        var loginPage = new LoginPage(page);
-        await loginPage.GoTo();
-        await loginPage.Login(username, password);
-    }
-
     public static async Task SaveStateAsync(string username, string password, string stateFilePath)
     {
         var playwright = await Playwright.CreateAsync();
-        var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false });
+        var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+        {
+            Headless = false,
+            Args = new[] { "--start-maximized" }
+        });
 
-        var context = await browser.NewContextAsync();
+        var context = await browser.NewContextAsync(new BrowserNewContextOptions
+        {
+            ViewportSize = null
+        });
+
         var page = await context.NewPageAsync();
 
-        await new LoginFixture().Login(page, username, password);
+        await new LoginPage(page).Login(username, password);
 
         // Save state
         await context.StorageStateAsync(new BrowserContextStorageStateOptions
