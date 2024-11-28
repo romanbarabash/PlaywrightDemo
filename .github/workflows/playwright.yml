@@ -17,6 +17,11 @@ jobs:
     - name: Build & Install
       run: |
         dotnet build
+    - name: Archive Build Output
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-output
+        path: PlaywrightFirstDemo/PlaywrightDemo/bin/Debug/net8.0/
     - name: Ensure browsers are installed
       run: pwsh ./PlaywrightDemo/bin/Debug/net8.0/playwright.ps1 install --with-deps
     - name: Run your tests
