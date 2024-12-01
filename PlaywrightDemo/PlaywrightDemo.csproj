@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DemoFramework\Tests\PageTest.cs" />
+    <Compile Remove="Framework\Tests\PageTest.cs" />
   </ItemGroup>
 
   <ItemGroup>

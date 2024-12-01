@@ -14,4 +14,10 @@ public class MainPage
 
     public NavigationBar NavigationBar => new(_page);
 
+    public ILocator BannerMessage => _page.Locator("//*[@class='banner-container']/p");
+
+    internal async Task GoTo()
+    {
+        await _page.GotoAsync("https://commitquality.com"); ;
+    }
 }
