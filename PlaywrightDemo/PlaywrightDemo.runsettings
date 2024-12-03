@@ -25,5 +25,8 @@
 	<TestRunParameters>
 		<!-- This line is user added, set env variable for test -->
 		<Parameter name="BASE_URL" value="https://playwright.dev/" />
+		<Parameter name="ReportPath" value="TestResults/TestReport.html" />
+		<Parameter name="Browser" value="chromium" />
+		<Parameter name="Headless" value="true" />
 	</TestRunParameters>
 </RunSettings>

@@ -21,7 +21,7 @@ class UploadFilesTest : BaseTest
         await _uploadFilePage.GoTo();
         await Page.PauseAsync();
 
-        await _uploadFilePage.UploadFile(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Framework", "TestArtifacts", "README.txt"));
+        await _uploadFilePage.UploadFile(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Framework!!!!", "TestArtifacts", "README.txt"));
 
         // Add event listener for the dialog box
         Page.Dialog += async (_, dialog) =>
