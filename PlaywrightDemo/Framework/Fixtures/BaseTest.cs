@@ -2,6 +2,7 @@
 using AventStack.ExtentReports.Reporter;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
+using PlaywrightDemo.Framework.Utils;
 
 namespace PlaywrightDemo.POM.Fixtures;
 
@@ -53,6 +54,7 @@ public class BaseTest : PageTest
         });
 
         test = extent.CreateTest(TestContext.CurrentContext.Test.FullName);
+        Log.Instance.Initialize(test); // Initialize Log with the ExtentTest
     }
 
     public override BrowserNewContextOptions ContextOptions()
@@ -78,11 +80,11 @@ public class BaseTest : PageTest
             );
 
             await Context.Tracing.StopAsync(new() { Path = tracePath });
-            test.Log(Status.Info, $"Trace saved to: {tracePath}");
+            Log.WriteLine(Status.Info, $"Setup: Trace saved to: {tracePath}");
         }
         catch (Exception ex)
         {
-            test.Log(Status.Warning, $"Error saving trace: {ex.Message}");
+            Log.WriteLine(Status.Warning, $"Setup: Error saving trace: {ex.Message}");
         }
 
         var outcome = TestContext.CurrentContext.Result.Outcome.Status;
@@ -91,20 +93,20 @@ public class BaseTest : PageTest
         switch (outcome)
         {
             case NUnit.Framework.Interfaces.TestStatus.Passed:
-                test.Pass("Test passed.");
+                Log.WriteLine(Status.Pass, "Test passed.");
                 break;
 
             case NUnit.Framework.Interfaces.TestStatus.Failed:
-                test.Fail($"Test failed: {message}");
+                Log.WriteLine(Status.Fail, $"Test failed: {message}");
                 CaptureScreenshotForFailure();
                 break;
 
             case NUnit.Framework.Interfaces.TestStatus.Skipped:
-                test.Skip("Test skipped.");
+                Log.WriteLine(Status.Skip, "Test skipped.");
                 break;
 
             default:
-                test.Warning("Test outcome unknown.");
+                Log.WriteLine(Status.Warning, "Test outcome neither Pass, Fail or Skip.");
                 break;
         }
     }
@@ -130,11 +132,13 @@ public class BaseTest : PageTest
 
             Directory.CreateDirectory(Path.GetDirectoryName(screenshotPath)!);
             Page.ScreenshotAsync(new PageScreenshotOptions { Path = screenshotPath }).Wait();
-            test.AddScreenCaptureFromPath(screenshotPath);
+
+            Log.WriteLine(Status.Info, $"Setup: Screenshot saved to: {screenshotPath}");
+            test.AddScreenCaptureFromPath(screenshotPath); // Optional, to attach to Extent report
         }
         catch (Exception ex)
         {
-            test.Log(Status.Warning, $"Error capturing screenshot: {ex.Message}");
+            Log.WriteLine(Status.Warning, $"Setup: Error capturing screenshot: {ex.Message}");
         }
     }
 }

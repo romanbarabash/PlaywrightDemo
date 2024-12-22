@@ -1,4 +1,6 @@
-﻿using Microsoft.Playwright;
+﻿using AventStack.ExtentReports;
+using Microsoft.Playwright;
+using PlaywrightDemo.Framework.Utils;
 using PlaywrightDemo.POM.Pages.Sections;
 
 namespace PlaywrightDemo.POM.Pages;
@@ -18,6 +20,7 @@ public class MainPage
 
     internal async Task GoTo()
     {
+        Log.WriteLine(Status.Info, "Page: open main page");
         await _page.GotoAsync("https://commitquality.com"); ;
     }
 }
