@@ -80,11 +80,11 @@ public class BaseTest : PageTest
             );
 
             await Context.Tracing.StopAsync(new() { Path = tracePath });
-            Log.WriteLine(Status.Info, $"Setup: Trace saved to: {tracePath}");
+            Log.WriteLine(Status.Info, $"Trace saved to: {tracePath}");
         }
         catch (Exception ex)
         {
-            Log.WriteLine(Status.Warning, $"Setup: Error saving trace: {ex.Message}");
+            Log.WriteLine(Status.Warning, $"Error saving trace: {ex.Message}");
         }
 
         var outcome = TestContext.CurrentContext.Result.Outcome.Status;
@@ -133,12 +133,12 @@ public class BaseTest : PageTest
             Directory.CreateDirectory(Path.GetDirectoryName(screenshotPath)!);
             Page.ScreenshotAsync(new PageScreenshotOptions { Path = screenshotPath }).Wait();
 
-            Log.WriteLine(Status.Info, $"Setup: Screenshot saved to: {screenshotPath}");
+            Log.WriteLine(Status.Info, $"Screenshot saved to: {screenshotPath}");
             test.AddScreenCaptureFromPath(screenshotPath); // Optional, to attach to Extent report
         }
         catch (Exception ex)
         {
-            Log.WriteLine(Status.Warning, $"Setup: Error capturing screenshot: {ex.Message}");
+            Log.WriteLine(Status.Warning, $"Error capturing screenshot: {ex.Message}");
         }
     }
 }

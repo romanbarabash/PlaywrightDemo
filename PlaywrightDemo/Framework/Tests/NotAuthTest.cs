@@ -23,7 +23,7 @@ public class NotAuthTest : BaseTest
     {
         await _mainPage.GoTo();
 
-        Log.WriteLine(Status.Info, "Test: verify Login button is present");
+        Log.WriteLine(Status.Info, "Verify Login button is present");
         await Assertions.Expect(Page.GetByText("Login")).ToBeVisibleAsync();
     }
 }
