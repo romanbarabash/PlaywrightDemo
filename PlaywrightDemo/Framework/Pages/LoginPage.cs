@@ -1,4 +1,6 @@
-﻿using Microsoft.Playwright;
+﻿using AventStack.ExtentReports;
+using Microsoft.Playwright;
+using PlaywrightDemo.Framework.Utils;
 
 namespace PlaywrightDemo.POM.Pages;
 
@@ -17,6 +19,7 @@ public class LoginPage
 
     public async Task Login(string username, string password)
     {
+        Log.WriteLine(Status.Info, $"Login into system with username: {username}, password: {password}");
         await UsernameInput.FillAsync(username);
         await PasswordInput.FillAsync(password);
         await LoginButton.ClickAsync();
@@ -24,6 +27,7 @@ public class LoginPage
 
     public async Task GoTo()
     {
+        Log.WriteLine(Status.Info, "Open LogIn page");
         await _page.GotoAsync("https://commitquality.com/login");
     }
 }

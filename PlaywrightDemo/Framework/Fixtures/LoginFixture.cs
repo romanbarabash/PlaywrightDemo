@@ -1,4 +1,6 @@
-﻿using Microsoft.Playwright;
+﻿using AventStack.ExtentReports;
+using Microsoft.Playwright;
+using PlaywrightDemo.Framework.Utils;
 using PlaywrightDemo.POM.Pages;
 
 namespace PlaywrightDemo.POM.Fixtures;
@@ -21,16 +23,15 @@ public class LoginFixture
         });
 
         var page = await context.NewPageAsync();
-
         await new LoginPage(page).Login(username, password);
 
-        // Save state
         await context.StorageStateAsync(new BrowserContextStorageStateOptions
         {
             Path = stateFilePath
         });
 
         await browser.CloseAsync();
+
     }
 
 
@@ -40,7 +41,10 @@ public class LoginFixture
         var statePath = Path.Combine(Directory.GetCurrentDirectory(), "state.json");
         if (!File.Exists(statePath))
         {
+            // Save state
             await SaveStateAsync("test", "test", statePath);
         }
+
+        Log.WriteLine(Status.Info, $"Saved state into {statePath}");
     }
 }

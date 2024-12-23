@@ -13,5 +13,4 @@ public class NavigationBar
 
     public ILocator LogoutButton => _page.GetByText("Logout");
 
-
 }
