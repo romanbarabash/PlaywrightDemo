@@ -1,10 +1,10 @@
-﻿using PlaywrightDemo.POM.Fixtures;
+﻿using PlaywrightDemo.Framework.Fixtures;
 using PlaywrightDemo.POM.Pages;
 
 namespace PlaywrightDemo.DemoFramework.Tests;
 
 [TestFixture]
-public class LoginTest : BaseTest
+public class LoginTest : NotAuthTestFixture
 {
     private LoginPage _loginPage;
     private MainPage _mainPage;

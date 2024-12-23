@@ -1,14 +1,14 @@
 ﻿using AventStack.ExtentReports;
 using Microsoft.Playwright;
 using NUnit.Framework.Internal;
+using PlaywrightDemo.Framework.Fixtures;
 using PlaywrightDemo.Framework.Utils;
-using PlaywrightDemo.POM.Fixtures;
 using PlaywrightDemo.POM.Pages;
 
 namespace PlaywrightDemo.DemoFramework.Tests;
 
 [TestFixture]
-public class NotAuthTest : BaseTest
+public class NotAuthTest : NotAuthTestFixture
 {
     private MainPage _mainPage;
 

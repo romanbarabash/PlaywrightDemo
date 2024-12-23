@@ -2,6 +2,7 @@
 using AventStack.ExtentReports.Reporter;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
+using NUnit.Framework.Interfaces;
 using PlaywrightDemo.Framework.Utils;
 
 namespace PlaywrightDemo.POM.Fixtures;
@@ -92,16 +93,16 @@ public class BaseTest : PageTest
 
         switch (outcome)
         {
-            case NUnit.Framework.Interfaces.TestStatus.Passed:
+            case TestStatus.Passed:
                 Log.WriteLine(Status.Pass, "Test passed.");
                 break;
 
-            case NUnit.Framework.Interfaces.TestStatus.Failed:
+            case TestStatus.Failed:
                 Log.WriteLine(Status.Fail, $"Test failed: {message}");
                 CaptureScreenshotForFailure();
                 break;
 
-            case NUnit.Framework.Interfaces.TestStatus.Skipped:
+            case TestStatus.Skipped:
                 Log.WriteLine(Status.Skip, "Test skipped.");
                 break;
 

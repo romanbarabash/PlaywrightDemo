@@ -1,12 +1,12 @@
 ﻿using Microsoft.Playwright;
-using PlaywrightDemo.POM.Fixtures;
+using PlaywrightDemo.Framework.Fixtures;
 using PlaywrightDemo.POM.Pages;
 
 namespace PlaywrightDemo.DemoFramework.Tests;
 
 
 [TestFixture]
-public class MainBannerTest : BaseTest
+public class MainBannerTest : NotAuthTestFixture
 {
     private MainPage _mainPage;
 

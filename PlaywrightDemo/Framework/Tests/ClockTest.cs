@@ -1,10 +1,10 @@
 ﻿using PlaywrightDemo.DemoFramework.Pages;
-using PlaywrightDemo.POM.Fixtures;
+using PlaywrightDemo.Framework.Fixtures;
 
 namespace PlaywrightDemo.DemoFramework.Tests;
 
 [TestFixture]
-public class ClockTest : BaseTest
+public class ClockTest : NotAuthTestFixture
 
 {
     private ClockPage _clockPage;

@@ -1,11 +1,11 @@
 ﻿using PlaywrightDemo.DemoFramework.Pages;
-using PlaywrightDemo.POM.Fixtures;
+using PlaywrightDemo.Framework.Fixtures;
 
 namespace PlaywrightDemo.DemoFramework.Tests;
 
 
 [TestFixture]
-class UploadFilesTest : BaseTest
+class UploadFilesTest : NotAuthTestFixture
 {
     private UploadFilePage _uploadFilePage;
 
