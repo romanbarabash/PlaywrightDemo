@@ -18,7 +18,7 @@
     <BrowserName>chromium</BrowserName>
     <ExpectTimeout>10000</ExpectTimeout>
     <LaunchOptions>
-      <Headless>false</Headless>
+      <Headless>true</Headless>
 	  <SlowMo>1000</SlowMo>
     </LaunchOptions>
   </Playwright>
@@ -27,6 +27,5 @@
 		<Parameter name="BASE_URL" value="https://playwright.dev/" />
 		<Parameter name="ReportPath" value="TestResults/TestReport.html" />
 		<Parameter name="Browser" value="chromium" />
-		<Parameter name="Headless" value="true" />
 	</TestRunParameters>
 </RunSettings>
