@@ -11,14 +11,8 @@ public class BaseTest : PageTest
 {
     public static ExtentReports extent;
     public ExtentTest test;
-
-    private static readonly string ReportDirectory = Path.Combine(
-        TestContext.CurrentContext.WorkDirectory, "TestResults"
-    );
-
-    private static readonly string ReportFilePath = Path.Combine(
-        ReportDirectory, "TestReport.html"
-    );
+    private static readonly string ReportDirectory = Path.Combine(TestContext.CurrentContext.WorkDirectory, "TestResults");
+    private static readonly string ReportFilePath = Path.Combine(ReportDirectory, "TestReport.html");
 
     [OneTimeSetUp]
     public void OneTimeSetup()
@@ -68,6 +62,7 @@ public class BaseTest : PageTest
         };
     }
 
+
     [TearDown]
     public async Task TearDown()
     {
@@ -88,6 +83,21 @@ public class BaseTest : PageTest
             Log.WriteLine(Status.Warning, $"Error saving trace: {ex.Message}");
         }
 
+        LogTestOutcome();
+    }
+
+    [OneTimeTearDown]
+    public void OneTimeTearDown()
+    {
+        if (extent != null)
+        {
+            extent.Flush();
+        }
+    }
+
+
+    private void LogTestOutcome()
+    {
         var outcome = TestContext.CurrentContext.Result.Outcome.Status;
         var message = TestContext.CurrentContext.Result.Message ?? string.Empty;
 
@@ -112,15 +122,6 @@ public class BaseTest : PageTest
         }
     }
 
-    [OneTimeTearDown]
-    public void OneTimeTearDown()
-    {
-        if (extent != null)
-        {
-            extent.Flush();
-        }
-    }
-
     private void CaptureScreenshotForFailure()
     {
         try
@@ -135,7 +136,7 @@ public class BaseTest : PageTest
             Page.ScreenshotAsync(new PageScreenshotOptions { Path = screenshotPath }).Wait();
 
             Log.WriteLine(Status.Info, $"Screenshot saved to: {screenshotPath}");
-            test.AddScreenCaptureFromPath(screenshotPath); // Optional, to attach to Extent report
+            test.AddScreenCaptureFromPath(screenshotPath);
         }
         catch (Exception ex)
         {
