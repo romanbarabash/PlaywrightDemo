@@ -1,5 +1,7 @@
-﻿using PlaywrightDemo.DemoFramework.Pages;
+﻿using AventStack.ExtentReports;
+using PlaywrightDemo.DemoFramework.Pages;
 using PlaywrightDemo.Framework.Fixtures;
+using PlaywrightDemo.Framework.Utils;
 
 namespace PlaywrightDemo.DemoFramework.Tests;
 
@@ -18,10 +20,15 @@ class UploadFilesTest : NotAuthTestFixture
     [Test]
     public async Task UploadFile()
     {
-        await _uploadFilePage.GoTo();
-        await Page.PauseAsync();
 
-        await _uploadFilePage.UploadFile(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Framework!!!!", "TestArtifacts", "README.txt"));
+        Log.WriteLine(Status.Info, "Open Upload File page as not authenticeted user");
+        await _uploadFilePage.GoTo();
+
+        var filePath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Framework!!!!", "TestArtifacts", "README.txt");
+
+        Log.WriteLine(Status.Info, $"Upload file {filePath} and wait for upload dialog appears");
+        await Page.PauseAsync();
+        await _uploadFilePage.UploadFile(filePath);
 
         // Add event listener for the dialog box
         Page.Dialog += async (_, dialog) =>

@@ -21,6 +21,7 @@ public class NotAuthTest : NotAuthTestFixture
     [Test]
     public async Task TestNotLoggined()
     {
+        Log.WriteLine(Status.Info, "Open Main page as not authenticeted user");
         await _mainPage.GoTo();
 
         Log.WriteLine(Status.Info, "Verify Login button is present");

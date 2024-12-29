@@ -1,4 +1,6 @@
-﻿using Microsoft.Playwright;
+﻿using AventStack.ExtentReports;
+using Microsoft.Playwright;
+using PlaywrightDemo.Framework.Utils;
 
 namespace PlaywrightDemo.POM.Fixtures;
 
@@ -9,7 +11,10 @@ public class AuthTestFixture : BaseTest
     public override BrowserNewContextOptions ContextOptions()
     {
         var options = base.ContextOptions();
-        options.StorageStatePath = StateFilePath; // Add the authenticated state
+        options.StorageStatePath = StateFilePath;
+
+        Log.WriteLine(Status.Info, $"Browser context options using saved state: {options}");
+
         return options;
     }
 }

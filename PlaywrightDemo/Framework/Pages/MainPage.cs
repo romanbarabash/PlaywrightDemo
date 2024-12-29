@@ -20,7 +20,7 @@ public class MainPage
 
     internal async Task GoTo()
     {
-        Log.WriteLine(Status.Info, "Open Main page");
+        Log.WriteLine(Status.Info, "Go to Main page");
         await _page.GotoAsync("https://commitquality.com"); ;
     }
 }

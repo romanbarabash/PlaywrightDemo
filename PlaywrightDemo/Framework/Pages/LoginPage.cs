@@ -27,7 +27,7 @@ public class LoginPage
 
     public async Task GoTo()
     {
-        Log.WriteLine(Status.Info, "Open LogIn page");
+        Log.WriteLine(Status.Info, "Go To LogIn page");
         await _page.GotoAsync("https://commitquality.com/login");
     }
 }
